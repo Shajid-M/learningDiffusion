@@ -127,7 +127,7 @@ class EncoderBlock(nn.Module):
         super().__init__()
         self.self_attention_block = self_attention_block
         self.feed_forward_block = feed_forward_block
-        self.residual_connection = nn.ModuleList([ResidualConnection(dropout) for _ in  range(2)])
+        self.residual_connection = nn.ModuleList([ResidualConnection(dropout) for _ in range(2)])
 
     def forward(self, x, src_mask):
         x = self.residual_connection[0](x, lambda x: self.self_attention_block(x, x, x, src_mask))
@@ -136,7 +136,7 @@ class EncoderBlock(nn.Module):
 
 class Encoder(nn.Module):
 
-    def __init__(self, layers: nn.MouduleList) -> None:
+    def __init__(self, layers: nn.ModuleList) -> None:
         super().__init__()
         self.layers = layers
         self.norm = LayerNormalization()
@@ -177,6 +177,7 @@ class Decoder(nn.Module):
 
         return self.norm(x)
 
+
 class ProjectionLayer(nn.Module):
 
     def __init__(self, d_model: int, vocab_size: int) -> None:
@@ -184,7 +185,7 @@ class ProjectionLayer(nn.Module):
         self.proj = nn.Linear(d_model, vocab_size)
 
     def forward(self, x):
-        return torch.log_softmax(self.proj(x), dim = -1)
+        return torch.log_softmax(self.proj(x), dim=-1)
 
 
 class Transformer(nn.Module):
@@ -211,7 +212,8 @@ class Transformer(nn.Module):
     
     def project(self, x):
         return self.projection_layer(x)
-    
+
+
 def build_transformer(src_vocab_size: int, tgt_vocab_size: int, src_seq_len: int, tgt_seq_len: int, d_model: int=512, N: int=6, h: int=8, dropout: float=0.1, d_ff: int=2048) -> Transformer:
     src_embed = InputEmbeddings(d_model, src_vocab_size)
     tgt_embed = InputEmbeddings(d_model, tgt_vocab_size)
