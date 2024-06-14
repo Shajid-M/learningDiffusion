@@ -6,7 +6,7 @@ from architecture import *
 def build_transformer(
         src_vocab_size: int, tgt_vocab_size: int, src_seq_len: int, tgt_seq_len: int,
         d_model: int = 512, N: int = 6, h: int = 8,
-        d_ff: int = 2048,dropout: float = 1e-1) -> Transformer:
+        d_ff: int = 2048, dropout: float = 1e-1) -> Transformer:
 
     src_embed = InputEmbeddings(d_model, src_vocab_size)
     tgt_embed = InputEmbeddings(d_model, tgt_vocab_size)
@@ -41,10 +41,3 @@ def build_transformer(
             nn.init.xavier_uniform_(p)
 
     return transformer
-
-
-
-    
-    
-    
-
