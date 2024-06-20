@@ -18,7 +18,7 @@ def build_transformer(
     for _ in range(N):
         self_attention_block = MultiHeadAttentionBlock(d_model, h, dropout)
         feed_forward_block = FeedForwardBlock(d_model, d_ff, dropout)
-        encoder_block = EncoderBlock(self_attention_block, feed_forward_block, dropout)
+        encoder_block = EncoderBlock(d_model, self_attention_block, feed_forward_block, dropout)
         encoder_blocks.append(encoder_block)
 
     decoder_blocks = []
@@ -26,11 +26,11 @@ def build_transformer(
         self_attention_block = MultiHeadAttentionBlock(d_model, h, dropout)
         cross_attention_block = MultiHeadAttentionBlock(d_model, h, dropout)
         feed_forward_block = FeedForwardBlock(d_model, d_ff, dropout)
-        decoder_block = DecoderBlock(self_attention_block, cross_attention_block, feed_forward_block, dropout)
+        decoder_block = DecoderBlock(d_model, self_attention_block, cross_attention_block, feed_forward_block, dropout)
         decoder_blocks.append(decoder_block)
 
-    encoder = Encoder(nn.ModuleList(encoder_blocks))
-    decoder = Decoder(nn.ModuleList(decoder_blocks))
+    encoder = Encoder(d_model, nn.ModuleList(encoder_blocks))
+    decoder = Decoder(d_model, nn.ModuleList(decoder_blocks))
 
     projection_layer = ProjectionLayer(d_model, tgt_vocab_size)
 
