@@ -5,7 +5,7 @@ from architecture import *
 
 def build_transformer(
         src_vocab_size: int, tgt_vocab_size: int, src_seq_len: int, tgt_seq_len: int,
-        d_model: int = 512, N: int = 6, h: int = 8,
+        d_model: int = 512, N: int = 2, h: int = 32,
         d_ff: int = 2048, dropout: float = 1e-1) -> Transformer:
 
     src_embed = InputEmbeddings(d_model, src_vocab_size)
